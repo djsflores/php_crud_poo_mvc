@@ -5,9 +5,9 @@ class Usuario extends EntidadBase{
   private $apellido;
   private $domicilio;
 
-  public function __construct() {
+  public function __construct($adapter) {
     $table="usuarios";
-    parent::__construct($table);
+    parent::__construct($table, $adapter);
   }
 
   public function getId() {
@@ -51,6 +51,17 @@ class Usuario extends EntidadBase{
     $save=$this->db()->query($query);
     //$this->db()->error;
     return $save;
+  }
+  public function saveId(){
+    $query="INSERT INTO usuarios (id,nombre,apellido,domicilio)
+            VALUES(NULL,
+                  '".$this->nombre."',
+                  '".$this->apellido."',
+                  '".$this->domicilio."');";
+    $save=$this->db()->query($query);
+    //$this->db()->error;
+    $last_id = $this->db()->insert_id;
+    return $last_id;
   }
 
 }

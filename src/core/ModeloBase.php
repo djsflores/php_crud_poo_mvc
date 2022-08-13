@@ -1,11 +1,10 @@
 <?php
 class ModeloBase extends EntidadBase{
   private $table;
-  private $fluent;
 
-  public function __construct($table) {
+  public function __construct($table, $adapter) {
     $this->table=(string) $table;
-    parent::__construct($table);
+    parent::__construct($table, $adapter);
   }
 
   public function ejecutarSql($query){

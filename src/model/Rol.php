@@ -3,9 +3,9 @@ class Rol extends EntidadBase{
   private $id;
   private $nombre;
 
-  public function __construct() {
+  public function __construct($adapter) {
     $table="roles";
-    parent::__construct($table);
+    parent::__construct($table, $adapter);
   }
 
   public function getId() {

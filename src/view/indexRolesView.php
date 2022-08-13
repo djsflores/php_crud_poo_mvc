@@ -3,11 +3,13 @@
   <head>
     <meta charset="utf-8"/>
     <title>CRUD PHP MySQLi POO MVC</title>
+    <!-- Bootstrap CSS v5.1.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- JQuery -->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- cdn iconos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <style>
+    <!-- <style>
       input{
         margin-top:5px;
         margin-bottom:5px;
@@ -15,7 +17,7 @@
       .right{
         float:right;
       }
-    </style>
+    </style> -->
   </head>
   <body>
 
@@ -27,8 +29,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="<?php echo $helper->url("usuarios","index"); ?>">Usuarios</a>
-            <a class="nav-link" href="<?php echo $helper->url("roles","index"); ?>">Roles</a>
+            <a class="nav-link" aria-current="page" href="<?php echo $helper->url("usuarios","index"); ?>">Usuarios</a>
+            <a class="nav-link active" href="<?php echo $helper->url("roles","index"); ?>">Roles</a>
           </div>
         </div>
       </div>
@@ -45,9 +47,9 @@
               <table class="table">
                 <thead>
                   <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col" colspan="2">Opciones</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col" colspan="2">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -55,11 +57,7 @@
                   <tr>
                     <td scope="row"><?php echo $rol->id; ?></td>
                     <td><?php echo $rol->nombre; ?></td>
-                    <td>
-                      <a class="text-success" href="#">
-                        <i class="bi bi-pencil-square"></i>
-                      </a>
-                    </td>
+                    <td><a class="text-success" href="<?php echo $helper->url("roles","editar"); ?>&id=<?php echo $rol->id; ?>"><i class="bi bi-pencil-square"></i></a></td>
                     <td><a class="text-danger" href="<?php echo $helper->url("roles","borrar"); ?>&id=<?php echo $rol->id; ?>" onclick="return confirm('Desea eliminar el rol?')"><i class="bi bi-trash"></i></a></td>
                 </tr>
                 <?php } ?>
@@ -78,16 +76,26 @@
                 <label class="form-label">Nombre: </label>
                 <input type="text" name="nombre" class="form-control" autofocus required>
               </div>
+              <div class="d-grid">
+                <input type="hidden" name="oculto" value="1">
+                <input type="submit" class="btn btn-primary" value="Registrar">
+              </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-
-    <footer class="col-lg-12">
-      <hr/>
-      CRUD PHP MySQLi POO MVC - David Flores - <a href="https://djsflores.github.io/">Portfolio</a> - Copyright &copy; <?php echo  date("Y"); ?>
+    <footer>
+      <div class="container-fluid bg-dark fixed-bottom">
+        <div class="row">
+          <div class="col-md text-light text-center py-1">
+            <span>CRUD PHP MySQLi POO MVC - David Flores - <a href="https://djsflores.github.io/">Portfolio</a> - Copyright &copy; <?php echo  date("Y"); ?></span>
+          </div>
+        </div>
+      </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
   </body>
 </html>
