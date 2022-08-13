@@ -35,77 +35,40 @@
       </div>
     </nav>
 
+    <?php echo " id user: ".$datauserid;?>
+    <?php echo "<br> ROLES: "; foreach($allroles as $rol) { echo " id: ".$rol->id; echo " nombre: ".$rol->nombre; }?>
+    <?php echo "<br> USER ROLES: "; foreach($allusuarioroles as $userrol) { echo $userrol->id_rol; }?>
+
     <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-7">
-          <div class="card">
-            <div class="card-header">
-              Lista de Usuarios
-            </div>
-            <div class="p-4">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Domicilio</th>
-                    <th scope="col">Roles</th>
-                    <th scope="col" colspan="2">Opciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach($allusers as $user) { ?>
-                    <tr>
-                      <td scope="row"><?php echo $user->id; ?></td>
-                      <td><?php echo $user->nombre; ?></td>
-                      <td><?php echo $user->apellido; ?></td>
-                      <td><?php echo $user->domicilio; ?></td>
-                      <?php 
-                        $rolesUsuario = "";
-                        foreach($allusuariosroles as $userrol) {
-                          if($user->id === $userrol->id_usuario){
-                            if ($rolesUsuario == ""){
-                              $rolesUsuario = $rolesUsuario.$userrol->nombre ;
-                            } else {
-                              $rolesUsuario = $rolesUsuario.", ".$userrol->nombre ;
-                            }
-                          }
-                        }
-                      ?>
-                      <td><?php echo $rolesUsuario; ?></td>
-                      <td><a class="text-success" href="<?php echo $helper->url("usuarios","editar"); ?>&id=<?php echo $user->id; ?>"><i class="bi bi-pencil-square"></i></a></td>
-                      <td><a class="text-danger" href="<?php echo $helper->url("usuarios","borrar"); ?>&id=<?php echo $user->id; ?>" onclick="return confirm('Desea eliminar el usuario?')"><i class="bi bi-trash"></i></a></td>
-                    </tr>
-                  <?php } ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      <div class="row justify-content-venter">
         <div class="col-md-4">
           <div class="card">
             <div class="card-header">
-              Ingresar datos del usuario:
+              Editar datos del usuario:
             </div>
-            <form action="<?php echo $helper->url("usuarios","crear"); ?>" method="post" class="p-4">
+            <form action="<?php echo $helper->url("usuarios","actualizar"); ?>" method="post" class="p-4">
               <div class="mb-3">
                 <label class="form-label">Nombre: </label>
-                <input type="text" name="nombre" class="form-control" autofocus required>
+                <input type="text" name="nombre" class="form-control" required value="<?php echo $datausernombre;?>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Apellido: </label>
-                <input type="text" name="apellido" class="form-control" autofocus required>
+                <input type="text" name="apellido" class="form-control" required value="<?php echo $datauserapellido;?>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Domicilio: </label>
-                <input type="text" name="domicilio" class="form-control" autofocus required>
+                <input type="text" name="domicilio" class="form-control" required value="<?php echo $datauserdomicilio;?>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Roles: </label>
                 <br>
                 <?php 
                 foreach($allroles as $rol) {
+echo $rol->id;
+                  if (in_array($rol->id, $allusuarioroles)) {
+                    echo "existe!";
+                  }
+
                 ?>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $rol->id; ?>" name="checkRoles[]" value="<?php echo $rol->id; ?>">
