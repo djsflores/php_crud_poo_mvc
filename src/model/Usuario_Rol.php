@@ -61,5 +61,10 @@ class Usuario_Rol extends EntidadBase{
     return $resultSet;
   }
 
+  public function deleteByUserIdRolId($id_user, $id_rol){
+    $query=$this->db()->query("DELETE FROM usuarios_roles WHERE id_usuario=$id_user AND id_rol=$id_rol");
+    return $query;
+  }
+
 }
 ?>
