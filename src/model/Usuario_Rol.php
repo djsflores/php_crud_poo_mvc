@@ -49,6 +49,10 @@ class Usuario_Rol extends EntidadBase{
     while ($row = $query->fetch_object()) {
       $resultSet[]=$row;
     }
+    // validacion nulo
+    if (!isset($resultSet)){
+      $resultSet=false;
+    }
     return $resultSet;
   }
 
@@ -57,6 +61,10 @@ class Usuario_Rol extends EntidadBase{
     //Devolvemos el resultset en forma de array de objetos
     while ($row = $query->fetch_object()) {
       $resultSet[]=$row;
+    }
+    // validacion nulo
+    if (!isset($resultSet)){
+      $resultSet=false;
     }
     return $resultSet;
   }

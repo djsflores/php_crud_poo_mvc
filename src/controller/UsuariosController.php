@@ -88,8 +88,11 @@ class UsuariosController extends ControladorBase{
       //Creamos el objeto usuario-rol y conseguimos todos los roles asignados al usuario
       $usuarioRol=new Usuario_Rol($this->adapter);
       $allusuarioroles=$usuarioRol->getAllUserRolByUserId($id);
-      foreach($allusuarioroles as $userrol) { 
-        $rolesAsignados[] = $userrol->id_rol; 
+      $rolesAsignados = [];
+      if (is_array($allusuarioroles) || is_object($allusuarioroles)){
+        foreach($allusuarioroles as $userrol) { 
+          $rolesAsignados[] = $userrol->id_rol; 
+        }
       }
       //Cargamos la vista index y le pasamos valores
       $this->view("indexUsuario",array(
@@ -125,8 +128,11 @@ class UsuariosController extends ControladorBase{
       //Creamos el objeto usuario-rol y conseguimos todos los roles asignados al usuario
       $usuarioRol=new Usuario_Rol($this->adapter);
       $allusuarioroles=$usuarioRol->getAllUserRolByUserId($id_usuario);
-      foreach($allusuarioroles as $userrol) { 
-        $rolesActuales[] = $userrol->id_rol; 
+      $rolesActuales = [];
+      if (is_array($allusuarioroles) || is_object($allusuarioroles)){
+        foreach($allusuarioroles as $userrol) { 
+          $rolesActuales[] = $userrol->id_rol; 
+        }
       }
       // Agregamos y eliminamos relaciones usuario-rol
       foreach($rolesActuales as $rol) {
