@@ -13,8 +13,9 @@ class UsuariosController extends ControladorBase{
   public function index(){
     //Creamos el objeto usuario
     $usuario=new Usuario($this->adapter);
-    //Conseguimos todos los usuarios
-    $allusers=$usuario->getAll();
+    //Conseguimos todos los usuarios activos
+    // $allusers=$usuario->getAll();
+    $allusers=$usuario->getBy('activo', 1);
     //Creamos el objeto rol
     $rol=new Rol($this->adapter);
     //Conseguimos todos los roles
@@ -41,14 +42,11 @@ class UsuariosController extends ControladorBase{
       $usuario->setDomicilio($_POST["domicilio"]);
       // $save=$usuario->save();
       $lastId=$usuario->saveId();
-      echo "save: ".$lastId;
     }
     if (isset($_POST['checkRoles'])){
       //Asociamos el usuario-rol
       $usuarioRol=new Usuario_Rol($this->adapter);
       foreach($_POST['checkRoles'] as $id){
-        echo "id usuario: ".$lastId;
-        echo "id rol: ".$id;
         $usuarioRol->setIdRol($id);
         $usuarioRol->setIdUsuario($lastId);   
         $save=$usuarioRol->save();     
@@ -61,7 +59,8 @@ class UsuariosController extends ControladorBase{
     if(isset($_GET["id"])){
       $id=(int)$_GET["id"];
       $usuario=new Usuario($this->adapter);
-      $usuario->deleteById($id);
+      //$usuario->deleteById($id);
+      $usuario->logicalErase($id);
     }
     $this->redirect();
   }
@@ -75,26 +74,23 @@ class UsuariosController extends ControladorBase{
   public function editar(){
     if(isset($_GET["id"])){
       $id=(int)$_GET["id"];
-      //Creamos el objeto usuario
+      //Creamos el objeto usuario y conseguimos los datos del usuario
       $usuario=new Usuario($this->adapter);
-      //Conseguimos los datos del usuario
       $user=$usuario->getById($id);
-      //var_dump($user);
-      //print_r($user['id']);
       $dataUser=json_decode(json_encode($user), true);
-      // print_r($dataUser);
       $dataUserId=$dataUser["id"];
       $dataUserNombre=$dataUser["nombre"];
       $dataUserApellido=$dataUser["apellido"];
       $dataUserDomicilio=$dataUser["domicilio"];
-      //Creamos el objeto rol
+      //Creamos el objeto rol y conseguimos todos los roles
       $rol=new Rol($this->adapter);
-      //Conseguimos todos los roles
       $allroles=$rol->getAll();
-      //Creamos el objeto usuario-rol
+      //Creamos el objeto usuario-rol y conseguimos todos los roles asignados al usuario
       $usuarioRol=new Usuario_Rol($this->adapter);
-      //Conseguimos todos los roles asignados al usuario
       $allusuarioroles=$usuarioRol->getAllUserRolByUserId($id);
+      foreach($allusuarioroles as $userrol) { 
+        $rolesAsignados[] = $userrol->id_rol; 
+      }
       //Cargamos la vista index y le pasamos valores
       $this->view("indexUsuario",array(
           // "datauser"=>$dataUser,
@@ -103,10 +99,56 @@ class UsuariosController extends ControladorBase{
           "datauserapellido"=>$dataUserApellido,
           "datauserdomicilio"=>$dataUserDomicilio,
           "allroles"=>$allroles,
-          "allusuarioroles"=>$allusuarioroles,
+          // "allusuarioroles"=>$allusuarioroles,
+          "rolesAsignados"=>$rolesAsignados,
           "Hola"    =>"Soy David Flores"
       ));
     }
+  }
+
+  public function actualizar(){
+    if(isset($_GET["id"])){
+      $id_usuario=(int)$_GET["id"];
+      //Obtenemos el usuario y actualizamos
+      $usuario=new Usuario($this->adapter);
+      $usuario->setId($id_usuario);
+      $usuario->setNombre($_POST["nombre"]);
+      $usuario->setApellido($_POST["apellido"]);
+      $usuario->setDomicilio($_POST["domicilio"]);
+      $update=$usuario->update();
+      // Obtenemos los nuevos roles recibidos de la vista
+      if (isset($_POST['checkRoles'])){
+        foreach($_POST['checkRoles'] as $id){
+          $rolesNuevos[] = $id; 
+        }
+      }
+      //Creamos el objeto usuario-rol y conseguimos todos los roles asignados al usuario
+      $usuarioRol=new Usuario_Rol($this->adapter);
+      $allusuarioroles=$usuarioRol->getAllUserRolByUserId($id_usuario);
+      foreach($allusuarioroles as $userrol) { 
+        $rolesActuales[] = $userrol->id_rol; 
+      }
+      // Agregamos y eliminamos relaciones usuario-rol
+      foreach($rolesActuales as $rol) {
+        if (!in_array($rol, $rolesNuevos)) {
+          // eliminar usuario-rol
+          $usuarioRol=new Usuario_Rol($this->adapter);
+          $usuarioRol->deleteByUserIdRolId($id_usuario, $rol);
+        }
+      }
+      foreach($rolesNuevos as $rol) {
+        if (!in_array($rol, $rolesActuales)) {
+          // agregar usuario-rol
+          $usuarioRol=new Usuario_Rol($this->adapter);
+          $usuarioRol->setIdRol($rol);
+          $usuarioRol->setIdUsuario($id_usuario);   
+          $save=$usuarioRol->save();   
+        }
+      }
+    }
+
+    $this->redirect("Usuarios", "index");
+    exit();
   }
 
 }

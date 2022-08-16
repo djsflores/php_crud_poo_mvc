@@ -9,15 +9,6 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- cdn iconos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <!-- <style>
-      input{
-        margin-top:5px;
-        margin-bottom:5px;
-      }
-      .right{
-        float:right;
-      }
-    </style> -->
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,10 +26,6 @@
       </div>
     </nav>
 
-    <?php echo " id user: ".$datauserid;?>
-    <?php echo "<br> ROLES: "; foreach($allroles as $rol) { echo " id: ".$rol->id; echo " nombre: ".$rol->nombre; }?>
-    <?php echo "<br> USER ROLES: "; foreach($allusuarioroles as $userrol) { echo $userrol->id_rol; }?>
-
     <div class="container mt-5">
       <div class="row justify-content-venter">
         <div class="col-md-4">
@@ -46,7 +33,7 @@
             <div class="card-header">
               Editar datos del usuario:
             </div>
-            <form action="<?php echo $helper->url("usuarios","actualizar"); ?>" method="post" class="p-4">
+            <form action="<?php echo $helper->url("usuarios","actualizar"); ?>&id=<?php echo $datauserid; ?>" method="post" class="p-4">
               <div class="mb-3">
                 <label class="form-label">Nombre: </label>
                 <input type="text" name="nombre" class="form-control" required value="<?php echo $datausernombre;?>">
@@ -62,25 +49,26 @@
               <div class="mb-3">
                 <label class="form-label">Roles: </label>
                 <br>
-                <?php 
-                foreach($allroles as $rol) {
-echo $rol->id;
-                  if (in_array($rol->id, $allusuarioroles)) {
-                    echo "existe!";
-                  }
-
-                ?>
+                  <?php 
+                  $checkear=0;
+                  foreach($allroles as $rol) {
+                    if (in_array($rol->id, $rolesAsignados)) {
+                      $checkear=1;
+                    } else{
+                      $checkear=0;
+                    }
+                  ?>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $rol->id; ?>" name="checkRoles[]" value="<?php echo $rol->id; ?>">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $rol->id; ?>" name="checkRoles[]" value="<?php echo $rol->id; ?>" <?php echo $checkear===1 ? 'checked' : '' ?> >
                     <label class="form-check-label" for="inlineCheckbox<?php echo $rol->id; ?>"><?php echo $rol->nombre; ?></label>
                   </div>
-                <?php
-                }
-                ?>
+                  <?php
+                  }
+                  ?>
               </div>
               <div class="d-grid">
                 <input type="hidden" name="oculto" value="1">
-                <input type="submit" class="btn btn-primary" value="Registrar">
+                <input type="submit" class="btn btn-primary" value="Actualizar">
               </div>
             </form>
           </div>

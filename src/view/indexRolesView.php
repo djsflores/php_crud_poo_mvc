@@ -9,15 +9,6 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- cdn iconos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <!-- <style>
-      input{
-        margin-top:5px;
-        margin-bottom:5px;
-      }
-      .right{
-        float:right;
-      }
-    </style> -->
   </head>
   <body>
 
@@ -44,7 +35,7 @@
               Lista de Roles
             </div>
             <div class="p-4">
-              <table class="table">
+              <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -59,7 +50,7 @@
                     <td><?php echo $rol->nombre; ?></td>
                     <td><a class="text-success" href="<?php echo $helper->url("roles","editar"); ?>&id=<?php echo $rol->id; ?>"><i class="bi bi-pencil-square"></i></a></td>
                     <td><a class="text-danger" href="<?php echo $helper->url("roles","borrar"); ?>&id=<?php echo $rol->id; ?>" onclick="return confirm('Desea eliminar el rol?')"><i class="bi bi-trash"></i></a></td>
-                </tr>
+                  </tr>
                 <?php } ?>
                 </tbody>
               </table>

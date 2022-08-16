@@ -43,7 +43,7 @@
               Lista de Usuarios
             </div>
             <div class="p-4">
-              <table class="table">
+              <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -63,12 +63,14 @@
                       <td><?php echo $user->domicilio; ?></td>
                       <?php 
                         $rolesUsuario = "";
-                        foreach($allusuariosroles as $userrol) {
-                          if($user->id === $userrol->id_usuario){
-                            if ($rolesUsuario == ""){
-                              $rolesUsuario = $rolesUsuario.$userrol->nombre ;
-                            } else {
-                              $rolesUsuario = $rolesUsuario.", ".$userrol->nombre ;
+                        if (is_array($allusuariosroles) || is_object($allusuariosroles)){
+                          foreach($allusuariosroles as $userrol) {
+                            if($user->id === $userrol->id_usuario){
+                              if ($rolesUsuario == ""){
+                                $rolesUsuario = $rolesUsuario.$userrol->nombre ;
+                              } else {
+                                $rolesUsuario = $rolesUsuario.", ".$userrol->nombre ;
+                              }
                             }
                           }
                         }

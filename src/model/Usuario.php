@@ -52,6 +52,7 @@ class Usuario extends EntidadBase{
     //$this->db()->error;
     return $save;
   }
+
   public function saveId(){
     $query="INSERT INTO usuarios (id,nombre,apellido,domicilio)
             VALUES(NULL,
@@ -62,6 +63,20 @@ class Usuario extends EntidadBase{
     //$this->db()->error;
     $last_id = $this->db()->insert_id;
     return $last_id;
+  }
+
+  public function update(){
+    $query="UPDATE usuarios SET nombre='".$this->nombre."', apellido='".$this->apellido."', domicilio='".$this->domicilio."' WHERE id=".$this->id.";";
+    $update=$this->db()->query($query);
+    //$this->db()->error;
+    return $update;
+  }
+
+  public function logicalErase($id){
+    $query="UPDATE usuarios SET activo=0 WHERE id=".$id.";";
+    $delete=$this->db()->query($query);
+    //$this->db()->error;
+    return $delete;
   }
 
 }
