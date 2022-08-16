@@ -44,6 +44,10 @@ class EntidadBase{
     while($row = $query->fetch_object()) {
       $resultSet[]=$row;
     }
+    // validacion nulo
+    if (!isset($resultSet)){
+      $resultSet=false;
+    }
     return $resultSet;
   }
 
